@@ -3,6 +3,7 @@ import atexit
 import signal
 import mido
 import time
+from midiInFS import midiInFS
 
 def onExit():
     print("Exiting.........")
@@ -14,11 +15,20 @@ def sigHandler(signo, frame):
 atexit.register(onExit)
 signal.signal(signal.SIGTERM, sigHandler)
 
+midiIn = midiInFS()
+midiIn.testFunc()
+
 midiOut = mido.open_output('Virtual Port', virtual=True)
+
+#midiIn.startAndAttachSynth()
+
 while True:
     #midiOut.sen
     #print ("tick")
     time.sleep(1.0)
-    msg = mido.Message('note_on', note=60)
+    msg = mido.Message('note_on', note=45)
+    midiOut.send(msg)
+    time.sleep(0.5)
+    msg = mido.Message('note_off', note=45)
     midiOut.send(msg)
 print ("Last Line..........")

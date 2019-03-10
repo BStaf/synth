@@ -2,12 +2,12 @@ import subprocess
 import time
 
 class midiInFS:
-    SoundFontFile = "/home/pi/soundfonts/Timbres.sf2"
+    SoundFontFile = "/home/pi/soundfonts/Piano1.sf2"
     
-    def testFunc():
+    def testFunc(self):
         print("test func called")
         
-    def initFluidSynth(soundFont):
+    def initFluidSynth(self, soundFont):
         #start fluidsynth in the backround
         subprocess.Popen(["fluidsynth",
             "-is",
@@ -15,13 +15,15 @@ class midiInFS:
             "--gain=3",
             soundFont])
 
-    def stopFluidSynth():
+    def stopFluidSynth(self):
         subprocess.Popen(["sudo",
             "pkill",
             "fluidsynth"])
 
-    def connectMidiToSynth(inputChannel, outputChannel):
+    def connectMidiToSynth(self, inputChannel, outputChannel):
         try:
+            outI = subprocess.check_output(["aconnect", "-i"])
+            print(outI)
             out = subprocess.check_output(["aconnect",
                 inputChannel+":0",
                 outputChannel+":0"])
@@ -31,21 +33,21 @@ class midiInFS:
             return False
         return True
 
-    def disconnectMidiSynth():
+    def disconnectMidiSynth(self):
         subprocess.Popen(["aconnect",
             "-x"]);
 
-    def startAndAttachSynth():
-        stopFluidSynth()
+    def startAndAttachSynth(self):
+        self.stopFluidSynth()
         time.sleep(1)
         print("Start FluidSynth")
-        initFluidSynth(SoundFontFile)
+        self.initFluidSynth(self.SoundFontFile)
         time.sleep(7)
         print("Attach Midi Device")
-        if connectMidiToSynth("20","128"):
+        if self.connectMidiToSynth("128","128"):
             print("connection ok")
         else:
             print("connection failed")
-            disconnectMidiSynth()
-            stopFluidSynth()
+            self.disconnectMidiSynth()
+            self.stopFluidSynth()
         print("Done")

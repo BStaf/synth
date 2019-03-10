@@ -13,9 +13,9 @@ echo Installing Python pip
 if hash pip>/dev/null; then
 	echo pip already installed
 else
-	sudo apt-get --assume-yes install python-pip
+	sudo apt-get --assume-yes install python3-pip
 fi
 
-pip install mido
+pip3 install mido
 sudo apt-get --assume-yes install libasound2-dev libjack-dev
-pip install python-rtmidi
+pip3 install python-rtmidi
