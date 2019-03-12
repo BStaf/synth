@@ -19,3 +19,4 @@ fi
 pip3 install mido
 sudo apt-get --assume-yes install libasound2-dev libjack-dev
 pip3 install python-rtmidi
+

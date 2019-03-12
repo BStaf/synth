@@ -6,7 +6,7 @@ import time
 import logging
 from midiInFS import midiInFS
 
-SoundFontFile = "/home/pi/soundfonts/DanceTrance.sf2"
+SoundFontFile = "/home/pi/soundfonts/FluidR3_GM.sf2"
 
 def onExit():
     logging.debug('Exiting')
@@ -14,6 +14,10 @@ def onExit():
 
 def sigHandler(signo, frame):
     sys.exit(0)
+
+def changeInstrument(inst):
+    msg = mido.Message('program_change', program =inst)
+    midiOut.send(msg)
 
 def playNote(midiOut, note, hold):
     msg = mido.Message('note_on', note=note)
@@ -46,8 +50,13 @@ else:
 midiOut = mido.open_output(fsPort[0])
 print (fsPort)
 
+incInst = 0
+hold = 0.15
+
 while True:
-    hold = 0.15
+    if incInst > 127:
+        incInst = 0
+    changeInstrument(incInst)
     playNote(midiOut, 60, hold)
     playNote(midiOut, 62, hold)
     playNote(midiOut, 64, hold)
@@ -56,4 +65,5 @@ while True:
     playNote(midiOut, 67, hold)
     playNote(midiOut, 65, hold)
     playNote(midiOut, 69, hold)
+    incInst += 1
 print ("Last Line..........")
