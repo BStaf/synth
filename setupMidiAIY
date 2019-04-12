@@ -19,4 +19,6 @@ fi
 pip3 install mido
 sudo apt-get --assume-yes install libasound2-dev libjack-dev
 pip3 install python-rtmidi
+pip3 install RPi.GPIO
 
+curl -sSL https://github.com/dynobot/Linux-Audio-Adjustments/raw/master/basic-install.sh | bash
