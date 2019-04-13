@@ -81,7 +81,9 @@ else:
 global midiOut
 midiOut = mido.open_output(fsPort[0])
 
-changeInstrument(30)
+changeInstrument(76)
+#changeInstrument(44) strings
+#changeInstrument(76)flutes
 print ("Connected")
 
 incInst = 0

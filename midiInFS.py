@@ -11,8 +11,10 @@ class midiInFS:
         #start fluidsynth in the backround
         subprocess.Popen(["fluidsynth",
             "-is",
+            "-r32000",
+            "-c8",
             "--audio-driver=alsa",
-            "--gain=3",
+            "--gain=2",
             soundFont])
 
     def stopFluidSynth(self):
