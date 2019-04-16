@@ -14,13 +14,20 @@ class midiInFS:
             "-r32000",
             "-c8",
             "--audio-driver=alsa",
-            "--gain=2",
+            "--gain=2.5",
             soundFont])
 
     def stopFluidSynth(self):
         subprocess.Popen(["sudo",
             "pkill",
             "fluidsynth"])
+
+    def setVolume(self):
+        subprocess.Popen(["amixer",
+            "set",
+            "PCM",
+            "--",
+            "94%"])
 
     def connectMidiToSynth(self, inputChannel, outputChannel):
         try:

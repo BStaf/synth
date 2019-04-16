@@ -78,6 +78,7 @@ while time.time() < timeout:
 else:
     logging.error("Failed to link to FluidSynth")
 
+midiIn.setVolume()
 global midiOut
 midiOut = mido.open_output(fsPort[0])
 
