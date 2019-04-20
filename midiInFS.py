@@ -22,12 +22,12 @@ class midiInFS:
             "pkill",
             "fluidsynth"])
 
-    def setVolume(self):
+    def setVolume(self, amount):
         subprocess.Popen(["amixer",
             "set",
             "PCM",
             "--",
-            "94%"])
+            amount+"%"])
 
     def connectMidiToSynth(self, inputChannel, outputChannel):
         try:
