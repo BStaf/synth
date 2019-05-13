@@ -6,18 +6,23 @@ import time
 import logging
 import RPi.GPIO as GPIO
 from midiInFS import midiInFS
+from subprocess import call
 
 SoundFontFile = "/home/pi/soundfonts/FluidR3_GM.sf2"
 
-PIN_DATA = 14
-PIN_LATCH = 15
-PIN_CLOCK = 18
+PIN_LATCH_POWER = 14
+PIN_POWER_STAT = 15
+
+PIN_DATA = 2 #14
+PIN_LATCH = 3 #15
+PIN_CLOCK = 4 #18
 
 KeyboardDict = {}
 inputMDict = {}
 #KeyboardRow = [20,16,12,7,8,25,24,23]
 KeyboardRow = [23,24,25,8,7,12,16,20]
-CntrlRow = [4,17,27,22,5,6,13,19]
+#CntrlRow = [4,17,27,22,5,6,13,19]
+CntrlRow = [17,27,22,5,6,13,19,26]
 finalMatrixOut = 26
 baseMidiNote = 36 #48
 
@@ -79,12 +84,16 @@ def processKeyInput(i, j, midiObj):
     if not note in KeyboardDict:
         KeyboardDict[note] = 2
     if GPIO.input(KeyboardRow[j]) == 1 and KeyboardDict[note] != 1:
-        playNote(note, 1, 9, midiObj)
+        playNote(note, 1, 1, midiObj)
         KeyboardDict[note] = 1
     elif GPIO.input(KeyboardRow[j]) == 0 and KeyboardDict[note] == 1:
-        playNote(note, 0, 9, midiObj)
+        playNote(note, 0, 1, midiObj)
         KeyboardDict[note] = 0
 
+def handleShutdown(channel):
+    if GPIO.input(channel) == 0:
+        print ("shutdwon called")
+        call("sudo shutdown -h now", shell=True)
 #def processKeyInputDrums(i, j, midiObj):
 #    note = 
 #    if not note in DrumsDict:
@@ -139,8 +148,13 @@ for i in range(8):
 GPIO.setup(PIN_DATA, GPIO.OUT)
 GPIO.setup(PIN_LATCH, GPIO.OUT)
 GPIO.setup(PIN_CLOCK, GPIO.OUT)
+GPIO.setup(PIN_LATCH_POWER, GPIO.OUT)
 GPIO.setup(finalMatrixOut, GPIO.OUT)
 
+
+GPIO.setup(PIN_POWER_STAT, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+GPIO.add_event_detect(PIN_POWER_STAT, GPIO.BOTH, callback=handleShutdown)
+GPIO.output(PIN_LATCH_POWER, 1)
 while True:
     inputMatrixHandler()
 #    for i in range(8):
