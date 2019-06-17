@@ -1,6 +1,6 @@
 #/bin/bash
 
-echo Installing Fluidsynth
+echo "Installing Fluidsynth"
 
 if hash fluidsynth 2>/dev/null; then
 	echo FluidSynth already installed
@@ -8,7 +8,7 @@ else
 	sudo apt-get --assume-yes install fluidsynth
 fi
 
-echo Installing Python pip
+echo "Installing Python pip"
 
 if hash pip>/dev/null; then
 	echo pip already installed
@@ -16,9 +16,15 @@ else
 	sudo apt-get --assume-yes install python3-pip
 fi
 
+echo "Installing mido and other stuff"
+
 pip3 install mido
 sudo apt-get --assume-yes install libasound2-dev libjack-dev
 pip3 install python-rtmidi
 pip3 install RPi.GPIO
 
+echo "Runing dynobot's Linux-Adio-Adjustments"
+
 curl -sSL https://github.com/dynobot/Linux-Audio-Adjustments/raw/master/basic-install.sh | bash
+
+
