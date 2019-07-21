@@ -8,6 +8,8 @@ import RPi.GPIO as GPIO
 from midiInFS import midiInFS
 from subprocess import call
 
+logging.getLogger().setLevel(logging.INFO)
+
 SoundFontFile = "/home/pi/soundfonts/FluidR3_GM.sf2"
 #SoundFontFile = "/home/pi/soundfonts/Timbres.sf2"
 
@@ -191,11 +193,13 @@ logging.info('Starting FluidSynth')
 midiIn = midiInFS()
 midiIn.stopFluidSynth()
 time.sleep(1)
+logging.info('FluidSynth loading soundfont')
 midiIn.initFluidSynth(SoundFontFile)
 
 logging.info('Connecting to FluidSynth port')
 fsPort = []
 timeout = time.time() + 30
+
 while time.time() < timeout:
     fsPort = [fs for fs in mido.get_output_names() if "FLUID" in fs]
     if fsPort == []:
@@ -234,6 +238,9 @@ GPIO.setup(finalMatrixOut, GPIO.OUT)
 GPIO.setup(PIN_POWER_STAT, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 GPIO.add_event_detect(PIN_POWER_STAT, GPIO.BOTH, callback=handleShutdown)
 GPIO.output(PIN_LATCH_POWER, 1)
+
+
+playNote(64, 1, currentChannel, midiOut)
 while True:
     inputMatrixHandler()
 #    for i in range(8):

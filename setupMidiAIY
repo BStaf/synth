@@ -23,13 +23,10 @@ sudo apt-get --assume-yes install libasound2-dev libjack-dev
 pip3 install python-rtmidi
 pip3 install RPi.GPIO
 
-echo "Runing dynobot's Linux-Adio-Adjustments"
-
-curl -sSL https://github.com/dynobot/Linux-Audio-Adjustments/raw/master/basic-install.sh | bash
 
 echo "Set rc.local to run script at startup"
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-CMD="python3 DIR/midiOut.py" 
+CMD="python3 $DIR/startSynth.py" 
 
 if grep -q "$CMD" /etc/rc.local; then
   echo "script already set up"
@@ -38,3 +35,8 @@ else
   echo "$CMD &" >> /etc/rc.local
   echo "exit 0" >> /etc/rc.local
 fi
+
+
+echo "Runing dynobot's Linux-Adio-Adjustments"
+
+#curl -sSL https://github.com/dynobot/Linux-Audio-Adjustments/raw/master/basic-install.sh | bash
