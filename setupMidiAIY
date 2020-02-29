@@ -39,4 +39,4 @@ fi
 
 echo "Runing dynobot's Linux-Adio-Adjustments"
 
-#curl -sSL https://github.com/dynobot/Linux-Audio-Adjustments/raw/master/basic-install.sh | bash
+curl -sSL https://github.com/dynobot/Linux-Audio-Adjustments/raw/master/basic-install.sh | bash
